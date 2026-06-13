@@ -148,7 +148,6 @@ services:
     - 13302:13302/tcp # Forwarder config
     volumes:
       - graylog_data:/usr/share/graylog/data
-      - graylog_journal:/usr/share/graylog/data/journal
     restart: unless-stopped
 
 volumes:
@@ -163,8 +162,6 @@ volumes:
   graylog-datanode3:
     driver: local
   graylog_data:
-    driver: local
-  graylog_journal:
     driver: local
 
 networks:
