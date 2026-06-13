@@ -12,6 +12,12 @@ services:
       resources:
         limits:
           memory: 1g
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     restart: unless-stopped
 
   datanode1:
@@ -36,6 +42,12 @@ services:
       - 8999:8999/tcp   # DataNode API
     volumes:
       - graylog-datanode1:/var/lib/graylog-datanode
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8999/api/status || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
     restart: unless-stopped
 
   datanode2:
@@ -60,6 +72,12 @@ services:
       - 8998:8999/tcp   # DataNode API
     volumes:
       - graylog-datanode2:/var/lib/graylog-datanode
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8999/api/status || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
     restart: unless-stopped
 
   datanode3:
@@ -84,6 +102,12 @@ services:
       - 8997:8999/tcp   # DataNode API
     volumes:
       - graylog-datanode3:/var/lib/graylog-datanode
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8999/api/status || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
     restart: unless-stopped
 
   graylog:
@@ -92,13 +116,13 @@ services:
     hostname: graylog
     depends_on:
       mongodb:
-        condition: service_started
+        condition: service_healthy
       datanode1:
-        condition: service_started
+        condition: service_healthy
       datanode2:
-        condition: service_started
+        condition: service_healthy
       datanode3:
-        condition: service_started
+        condition: service_healthy
     entrypoint: /usr/bin/tini --  /docker-entrypoint.sh
     environment:
       GRAYLOG_NODE_ID_FILE: /usr/share/graylog/data/data/node-id
