@@ -8,6 +8,10 @@ services:
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     restart: unless-stopped
 
   datanode1:
