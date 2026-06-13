@@ -89,6 +89,12 @@ services:
     depends_on:
       mongodb:
         condition: service_started
+      datanode1:
+        condition: service_started
+      datanode2:
+        condition: service_started
+      datanode3:
+        condition: service_started
     entrypoint: /usr/bin/tini --  /docker-entrypoint.sh
     environment:
       GRAYLOG_NODE_ID_FILE: /usr/share/graylog/data/data/node-id
