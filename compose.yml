@@ -53,7 +53,7 @@ services:
     networks:
       - graylog-network
     ports:
-      - 8998:8998/tcp   # DataNode API
+      - 8998:8999/tcp   # DataNode API
     volumes:
       - graylog-datanode2:/var/lib/graylog-datanode
     restart: on-failure
@@ -77,7 +77,7 @@ services:
     networks:
       - graylog-network
     ports:
-      - 8997:8997/tcp   # DataNode API
+      - 8997:8999/tcp   # DataNode API
     volumes:
       - graylog-datanode3:/var/lib/graylog-datanode
     restart: on-failure
